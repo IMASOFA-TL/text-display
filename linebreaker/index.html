@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="../style.css">
+        <script defer src="../fontdata.js"></script>
+        <script defer src="linebreak.js"></script>
+        <script defer src="unlinebreak.js"></script>
+        <script defer src="emojidata.js"></script>
+        <script defer src="emojiHelper.js"></script>
+        <script defer src="createBox.js"></script>
+    </head>
+    <body>
+        <h1>Line Breaker</h1>
+        <h4>Instructions</h4>
+        Enter your text into the text box below, and the maximum width limit into 
+        the max width box. <br>
+        Click the Linebreak button and the text will have 
+        linebreaks added to it to keep it under the maximum width. <br>
+        Click the Unlinebreak button to remove linebreaks that are in the middle of sentences. <br>
+        You can also click the Kanji to Emoji or Emoji to Kanji buttons to convert the kanji to emoji and vice versa. <br>
+        <br>
+        <button onclick="createBox()">Click this to create another text area</button>
+        <button onclick="deleteBox()">Click this to delete the last text area</button>
+        <div id="container">
+        </div>
+    </body>
+</html> 

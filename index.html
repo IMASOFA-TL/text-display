@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./style.css">
+        <script defer src="./fontdata.js"></script>
+        <script defer src="./load_font.js"></script>
+        <script defer src="./parse_text.js"></script>
+        <script defer src="./draw_text.js"></script>
+    </head>
+    <body>
+        <h1>偶像大师-OFA  汉化字体预览</h1>
+        <div class="div_left">
+            <h4>Instructions</h4>
+            Copy text into the box below and click "Draw" to view the text in the OFA font.
+            <hr>
+            You can also try clicking the "Parse and draw" button - this will attempt to parse the text entered into the box 
+            as a series of messages.
+
+            Click <a href="./linebreaker/index.html">here</a> to go to the line breaker utility page.
+        </div>
+        <div class="div_right">
+        <h4>Format for parsing:</h4>
+        <ul>
+            <li>All lines beginning with a # (hash symbol) are comments and will be ignored. You can use this to comment out the original Japanese text.</li>
+            <li>The first line should be unedited (a filename of the form commu2/par/***.par).</li>
+            <li>Next is a series of entries:</li>
+        </ul>
+        Each entry should have the following form:
+        <ol>
+            <li>One line with a number, the ID of the text. </li>
+            <li>One line with the name of the speaker (possibly blank, e.g. if the speaker is the Producer). </li>
+            <li>One or more lines containing the actual text.</li>
+            <li>One line with a single $ (dollar symbol) on it. </li>
+        </ol>
+        Make sure there are no blank lines after the last $ symbol.
+        </div>
+        <p>
+            <textarea cols="80" rows="16" id="textinput"></textarea>
+        </p>
+        <p>
+            <button onclick="drawProvidedString()">Draw</button>
+            <button onclick="parseProvidedString()">Parse and draw</button>
+        </p>
+        <p>
+            <canvas id="canvas" width="918" height="187"></canvas>
+        </p>
+        <p>
+            <label id="problemLabel"> </label>
+        </p>
+        <p>
+            <button class="prevnext" id="btnPrev" onclick="prevBox()">Previous</button>
+            <label id="indexLabel"> </label>
+            <button class="prevnext" id="btnNext" onclick="nextBox()">Next</button>
+        </p>
+    </body>
+</html>
