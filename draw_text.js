@@ -6,8 +6,11 @@ var ctx;
 var canvasx;
 var canvasy;
 
+var ImgWhite=new Image();
+ImgWhite.src = "./fontwhite.png";
+
 function drawProvidedString() {
-    drawString(document.getElementById("textinput").value, spritesBlack, 16);
+    drawString(document.getElementById("textinput").value, spritesWhite, 16);
 }
 
 /**
@@ -86,7 +89,7 @@ function drawNumArray(array, sprites, clear = true, posx = 32, posy = 32, widthm
     if (clear) {
         ctx.drawImage(backgroundImg, 0, 0);
     }
-    array.forEach((n) => drawNum(n, sprites, posx, widthmax));
+    array.forEach((n) => drawNum(n, sprites, posx, widthmax));  
 }
 
 /**@type{number} */
@@ -118,14 +121,119 @@ function drawCurrentBox()
     disableButtons();
 }
 
+
+function search(obj, key) {
+    for (var prop of obj) {
+      if (prop.key == key) {
+        return prop;
+      }
+    }
+  }
+
+function createFontBitMap (bitmap,value) {
+    return {
+        "key": value.key,
+        "bitmap": bitmap,
+        "offsetx": value.offsetx,
+        "offsety": value.offsety,
+        "width": value.width
+    };
+}
+
+function loadNeedFont(sprites, textcodes) {
+    textcodes.forEach(function(code){
+        if(typeof(sprites[code])!="undefined"){
+            return
+        }
+        let value=search(fontdata,code);
+        if(typeof(value)=="undefined"){
+            return
+        }
+        createImageBitmap(ImgWhite, 
+            value.datax, 
+            value.datay, 
+            value.datawidth, 
+            value.dataheight
+        ).then(
+            function (ImageBitmap) {
+                sprites[value.key] = {
+                    "bitmap": ImageBitmap,
+                    "offsetx": value.offsetx,
+                    "offsety": value.offsety,
+                    "width": value.width
+                }
+            }
+        )    
+    }
+)
+}
+
 /**
  * 
  * @param {{id: number, speaker: string, message: string}} box 
  */
-function drawBox(box)
+async function drawBox(box)
 {
-    drawNumArray(encode(box.speaker).slice(0, 12), spritesWhite, true, 52, 34);
-    drawNumArray(encode(box.message).slice(0, 63), spritesBlack, false, 64, 86, 834);
+    var speakcode=encode(box.speaker).slice(0, 12);
+    var textcode=encode(box.message).slice(0, 63);
+    await loadNeedFont(spritesWhite, speakcode)
+    await loadNeedFont(spritesWhite, textcode)
+    /*
+    speakcode.forEach(function(code){
+            if(typeof(spritesWhite[code])!="undefined"){
+                return
+            }
+            let value=search(fontdata,code);
+            if(typeof(value)=="undefined"){
+                return
+            }
+            createImageBitmap(ImgWhite, 
+                value.datax, 
+                value.datay, 
+                value.datawidth, 
+                value.dataheight
+            ).then(
+                function (ImageBitmap) {
+                    spritesWhite[value.key] = {
+                        "bitmap": ImageBitmap,
+                        "offsetx": value.offsetx,
+                        "offsety": value.offsety,
+                        "width": value.width
+                    }
+                }
+            )    
+        }
+    )
+
+    textcode.forEach(function(code){
+            if(typeof(spritesWhite[code])!="undefined"){
+                return
+            }
+            let value=search(fontdata,code);
+            if(typeof(value)=="undefined"){
+                return
+            }
+            createImageBitmap(ImgWhite, 
+                value.datax, 
+                value.datay, 
+                value.datawidth, 
+                value.dataheight
+            ).then(
+                function (ImageBitmap) {
+                    spritesWhite[value.key] = {
+                        "bitmap": ImageBitmap,
+                        "offsetx": value.offsetx,
+                        "offsety": value.offsety,
+                        "width": value.width
+                    }
+                }
+            )    
+        }
+    )
+    */
+
+    await drawNumArray(speakcode, spritesWhite, true, 52, 34);
+    await drawNumArray(textcode, spritesWhite, false, 64, 86, 834);
 }
 
 

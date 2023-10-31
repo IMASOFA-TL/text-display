@@ -1,9 +1,10 @@
 var spritesWhite = {};
 var spritesBlack = {};
-var spritesLoaded = 0;
+var spritesLoaded = 2;
 
 var backgroundImg = new Image();
 backgroundImg.src = "./back.png";
+
 
 function loadFont(sprites, imgsrc) {
     var imgWhite = new Image();
@@ -44,5 +45,8 @@ function loadFont(sprites, imgsrc) {
     imgWhite.src = imgsrc;
 }
 
-loadFont(spritesWhite, "./fontwhite.png");
-loadFont(spritesBlack, "./fontwhite.png");
+
+
+
+//loadFont(spritesWhite, "./fontwhite.png");
+//loadFont(spritesBlack, "./fontwhite.png");
