@@ -103,48 +103,10 @@ function encode(text)
     var prevk = 0;
     text.split("").forEach( function (char) {
         var k = char.codePointAt(0);
-        switch (next) {
-            case 3:
-                if (k > 0x20 && k < 0x7F) {
-                    array.push(prevk * 256 + k + 0x80);
-                    next = 0;
-                    return;
-                } else {
-                    array.push(prevk * 256);
-                }
-                break;
-            case 2:
-                if (k == 0x20 || (k > 0x60 && k < 0x7A)) {
-                    array.push(prevk * 256 + k + 0x80);
-                    next = 0;
-                    return;
-                } else {
-                    array.push(prevk * 256);
-                }
-                break;
-            case 1:
-                if (k == 0x20) {
-                    array.push(prevk * 256 + k + 0x80);
-                    next = 0;
-                    return;
-                } else {
-                    array.push(prevk * 256);
-                }
-                break;
+        if(k==92){
+            return
         }
-        if (k == 0x20) {
-            prevk = k + 0x80;
-            next = 3;
-        } else if (k > 0x60 && k <= 0x7A) {
-            prevk = k + 0x80;
-            next = 2;
-        } else if (k >= 0x20 && k <= 0x7F) {
-            prevk = k + 0x80;
-            next = 1;
-        } else {
-            array.push(k);
-            next = 0;
-        }
+        array.push(k);
     });
     if (next != 0) {
         array.push(prevk * 256);
