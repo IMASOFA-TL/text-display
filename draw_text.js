@@ -9,6 +9,9 @@ var canvasy;
 var ImgWhite=new Image();
 ImgWhite.src = "./fontwhite.png";
 
+var ImgBlack=new Image();
+ImgBlack.src = "./fontblack.png";
+
 function drawProvidedString() {
     drawString(document.getElementById("textinput").value, spritesWhite, 16);
 }
@@ -140,7 +143,7 @@ function createFontBitMap (bitmap,value) {
     };
 }
 
-function loadNeedFont(sprites, textcodes) {
+function loadNeedFont(sprites, textcodes, isWhite) {
     textcodes.forEach(function(code){
         if(typeof(sprites[code])!="undefined"){
             return
@@ -149,23 +152,40 @@ function loadNeedFont(sprites, textcodes) {
         if(typeof(value)=="undefined"){
             return
         }
-        createImageBitmap(ImgWhite, 
-            value.datax, 
-            value.datay, 
-            value.datawidth, 
-            value.dataheight
-        ).then(
-            function (ImageBitmap) {
-                sprites[value.key] = {
-                    "bitmap": ImageBitmap,
-                    "offsetx": value.offsetx,
-                    "offsety": value.offsety,
-                    "width": value.width
+        if(isWhite){
+            createImageBitmap(ImgWhite, 
+                value.datax, 
+                value.datay, 
+                value.datawidth, 
+                value.dataheight
+            ).then(
+                function (ImageBitmap) {
+                    sprites[value.key] = {
+                        "bitmap": ImageBitmap,
+                        "offsetx": value.offsetx,
+                        "offsety": value.offsety,
+                        "width": value.width
+                    }
                 }
-            }
-        )    
-    }
-)
+            )  
+        }else{
+            createImageBitmap(ImgBlack, 
+                value.datax, 
+                value.datay, 
+                value.datawidth, 
+                value.dataheight
+            ).then(
+                function (ImageBitmap) {
+                    sprites[value.key] = {
+                        "bitmap": ImageBitmap,
+                        "offsetx": value.offsetx,
+                        "offsety": value.offsety,
+                        "width": value.width
+                    }
+                }
+            )  
+        }
+    })
 }
 
 /**
@@ -176,64 +196,10 @@ async function drawBox(box)
 {
     var speakcode=encode(box.speaker).slice(0, 12);
     var textcode=encode(box.message).slice(0, 63);
-    await loadNeedFont(spritesWhite, speakcode)
-    await loadNeedFont(spritesWhite, textcode)
-    /*
-    speakcode.forEach(function(code){
-            if(typeof(spritesWhite[code])!="undefined"){
-                return
-            }
-            let value=search(fontdata,code);
-            if(typeof(value)=="undefined"){
-                return
-            }
-            createImageBitmap(ImgWhite, 
-                value.datax, 
-                value.datay, 
-                value.datawidth, 
-                value.dataheight
-            ).then(
-                function (ImageBitmap) {
-                    spritesWhite[value.key] = {
-                        "bitmap": ImageBitmap,
-                        "offsetx": value.offsetx,
-                        "offsety": value.offsety,
-                        "width": value.width
-                    }
-                }
-            )    
-        }
-    )
-
-    textcode.forEach(function(code){
-            if(typeof(spritesWhite[code])!="undefined"){
-                return
-            }
-            let value=search(fontdata,code);
-            if(typeof(value)=="undefined"){
-                return
-            }
-            createImageBitmap(ImgWhite, 
-                value.datax, 
-                value.datay, 
-                value.datawidth, 
-                value.dataheight
-            ).then(
-                function (ImageBitmap) {
-                    spritesWhite[value.key] = {
-                        "bitmap": ImageBitmap,
-                        "offsetx": value.offsetx,
-                        "offsety": value.offsety,
-                        "width": value.width
-                    }
-                }
-            )    
-        }
-    )
-    */
-
+    await loadNeedFont(spritesWhite, speakcode,true)
+    await loadNeedFont(spritesBlack, textcode,false)
     await drawNumArray(speakcode, spritesWhite, true, 52, 34);
-    await drawNumArray(textcode, spritesWhite, false, 64, 86, 834);
+    await drawNumArray(textcode, spritesBlack, false, 64, 86, 834);
 }
 
 
